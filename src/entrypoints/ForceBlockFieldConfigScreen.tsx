@@ -106,6 +106,7 @@ export function ForceBlockFieldConfigScreen({ctx}: PropTypes) {
                     validators = validators.concat(field.attributes.validators.rich_text_blocks["item_types"]);
         });
 
+        //console.log(`ForceBlockFieldConfig: ctx ${JSON.stringify(ctx,null,2)}`)
 
         let initialSwitchFieldData: any[] = [];
         validators.forEach((validators_block_id, index) => {

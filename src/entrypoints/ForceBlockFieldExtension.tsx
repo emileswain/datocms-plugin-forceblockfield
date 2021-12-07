@@ -66,7 +66,7 @@ export function ForceBlockFieldExtension({ctx}: Props) {
                         //// itemID is required to save the record without failure. Just made one up.
                         ////
                         try{
-                            ctx.setFieldValue(ctx.field.attributes.api_key, [...fieldValue, {
+                            ctx.setFieldValue(ctx.field.attributes.api_key, [...fieldValue || [], {
                                 "itemTypeId": itemTypeId,
                                 "itemId": "new-" + nanoid(),
                             }]);

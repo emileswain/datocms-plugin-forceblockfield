@@ -11,7 +11,7 @@ export default function ConfigScreen({ ctx }: Props) {
     <Canvas ctx={ctx}>
       <p>Welcome to the Force Block Field plugin</p>
       <div className={s.inspector}>
-        <ContextInspector ctx={ctx} />
+        {/*<ContextInspector ctx={ctx} />*/}
       </div>
     </Canvas>
   );
