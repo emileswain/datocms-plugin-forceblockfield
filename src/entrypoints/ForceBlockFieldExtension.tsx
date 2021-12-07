@@ -39,7 +39,7 @@ export function ForceBlockFieldExtension({ctx}: Props) {
             //// on how to actually do this or what to expect.
             ////
             const fieldValue = get(ctx.formValues, ctx.field.attributes.api_key) as [];
-
+            quickLog(" fieldValue == " + JSON.stringify(fieldValue, null, 3))
             quickLog(" ctx.formValues == " + JSON.stringify(ctx.formValues, null, 3))
             ////
             //// For each Block type listed in the validation
@@ -52,7 +52,7 @@ export function ForceBlockFieldExtension({ctx}: Props) {
 
 
                 const forceApplyBlock = blocksToApply?.indexOf(itemTypeId) >= 0;
-                console.log(`blocksToApply =${JSON.stringify(blocksToApply, null, 2)} \r\r ${forceApplyBlock}`);
+                quickLog(`blocksToApply =${JSON.stringify(blocksToApply, null, 2)} \r\n Force Apply Block : ${forceApplyBlock}`);
 
                 if (forceApplyBlock) {
                     //// check to see if we have an entry for the block
@@ -65,10 +65,14 @@ export function ForceBlockFieldExtension({ctx}: Props) {
                         //// triggers the required rebuild and displays the correct form.
                         //// itemID is required to save the record without failure. Just made one up.
                         ////
-                        ctx.setFieldValue(ctx.field.attributes.api_key, [...fieldValue, {
-                            "itemTypeId": itemTypeId,
-                            "itemId": "new-" + nanoid(),
-                        }]);
+                        try{
+                            ctx.setFieldValue(ctx.field.attributes.api_key, [...fieldValue, {
+                                "itemTypeId": itemTypeId,
+                                "itemId": "new-" + nanoid(),
+                            }]);
+                        }catch(error) {
+                            console.error(`ForceBlocks setFieldValue Failed; \r\n ${JSON.stringify(error, null, 2)}`);
+                        }
                     }
                 }
             });
