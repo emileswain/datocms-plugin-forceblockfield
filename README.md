@@ -10,16 +10,22 @@ dialog.
 Add the Addon and then Select the blocks (matching the ones you've set in the validator) you want to automatically attach
 when a new instance of the model is generated.
 
-[Describe what your plugin does, and how users you can configure it! Screenshots are always welcome!]
+# DataCMS SDK version
+
+This plugin uses ctx.pendingField which was introduced around this version. 
+    "datocms-plugin-sdk": "^0.3.20",
+    "datocms-react-ui": "^0.3.21",
+
 
 ##Issues
 ### lists all blocks used by model in Presentation View.
-In the Presentation view, I can't determine which field your editing, so rather than just listing the blocks
+No longer an issue with support from DatoCMS introducing ctx.pendingField data.
+~~In the Presentation view, I can't determine which field your editing, so rather than just listing the blocks
 you've applied in the validations view, it unfortunately lists all the blocks in currently used in the model. 
 
 Hopefully, a better solution can be applied in the future. 
 
-Selecting blocks that are not in the validations section, won't be applied. 
+Selecting blocks that are not in the validations section, won't be applied.~~ 
 
 ### Localisation
 I think there is some jiggery pokery that needs to be done for localisation support, but for lack of documentation, I haven't a clue what that is.
