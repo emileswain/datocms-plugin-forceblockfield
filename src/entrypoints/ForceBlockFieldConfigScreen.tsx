@@ -146,14 +146,13 @@ export function ForceBlockFieldConfigScreen({ctx}: PropTypes) {
                     value={pluginParameters.devMode || false}
                     onChange={update.bind(null, "devMode")}
                 />
-                <div>Select blocks to automatically apply to this field, when creating a new instance of this model.
-                </div>
+                <div>Select Validations to automatically apply to this field. (When creating a new instance)</div>
                 {blockSwitchFieldData.map((detail: any) => (
                     <SwitchField
                         key={detail.key}
                         id={`${detail.validators_block_id}`}
                         name={`${detail.validators_block_id}`}
-                        label={`Force apply ${detail.blockName}`}
+                        label={`Apply ${detail.blockName}`}
                         value={detail.force}
                         onChange={updateBlockFields.bind(null, detail.validators_block_id)}
                     />
