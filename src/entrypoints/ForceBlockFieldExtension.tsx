@@ -71,6 +71,7 @@ export function ForceBlockFieldExtension({ctx}: Props) {
                                 "itemId": "new-" + nanoid(),
                             }]);
                         }catch(error) {
+                            ctx.alert(`Failed to setFieldValue on field ${ctx.field.attributes.api_key}`);
                             console.error(`ForceBlocks setFieldValue Failed; \r\n ${JSON.stringify(error, null, 2)}`);
                         }
                     }
