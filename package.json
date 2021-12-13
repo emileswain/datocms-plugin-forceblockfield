@@ -1,6 +1,6 @@
 {
   "name": "datocms-plugin-forceblockfield",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "homepage": "https://github.com/emileswain/datocms-plugin-forceblockfield",
   "description": "Force modula fields to apply blocks set in validation.",
   "keywords": [
@@ -12,13 +12,14 @@
   "private": false,
   "datoCmsPlugin": {
     "title": "Force Block Field plugin",
-    "previewImage": "",
-    "coverImage": "",
+    "previewImage": "docs/presentation.png",
+    "coverImage": "docs/cover.png",
     "entryPoint": "build/index.html",
     "permissions": []
   },
   "files": [
-    "build"
+    "build",
+    "docs"
   ],
   "dependencies": {
     "@types/node": "^16.11.11",

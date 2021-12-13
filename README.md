@@ -1,3 +1,6 @@
+
+![](docs/cover.png)
+
 # Force Block Field Plugin
 
 Modula fields let you choose the Blocks you'd like user to be able to apply to you field, by setting blocks in the Validations View. 
@@ -10,22 +13,37 @@ dialog.
 Add the Addon and then Select the blocks (matching the ones you've set in the validator) you want to automatically attach
 when a new instance of the model is generated.
 
+
 # DataCMS SDK version
 
 This plugin uses ctx.pendingField which was introduced around this version. 
+
     "datocms-plugin-sdk": "^0.3.20",
     "datocms-react-ui": "^0.3.21",
+
+#Example
+Add the validators you want this field to support
+
+![](docs/validators.png)
+
+Goto the Presentation Tab and add the Force Blocks plugin. Then select the validators
+you want to automatically add to new instances of the model.
+
+![](docs/presentation.png)
+
+
+When you create a new model or edit an existing one, the plugin will check the field to see if each validation should be applied and apply it, if it isn't already applied.
+
+As you can see, it also works with fields that require 1 or more blocks. 
+If you try to remove the block, it will automatically add it back in. All error checking for the block should also continue to work.
+![](docs/model.png)
+
 
 
 ##Issues
 ### lists all blocks used by model in Presentation View.
-No longer an issue with support from DatoCMS introducing ctx.pendingField data.
-~~In the Presentation view, I can't determine which field your editing, so rather than just listing the blocks
-you've applied in the validations view, it unfortunately lists all the blocks in currently used in the model. 
-
-Hopefully, a better solution can be applied in the future. 
-
-Selecting blocks that are not in the validations section, won't be applied.~~ 
+The introduction of the ctc.pendingField property in SDK v2 meant I could detect the field your were editing, and list only that fields validators, whereas before I had to display all validators for the model.
+ 
 
 ### Localisation
 I think there is some jiggery pokery that needs to be done for localisation support, but for lack of documentation, I haven't a clue what that is.
@@ -33,6 +51,11 @@ Something to do with field_ids, and fields paths or something.
 
 
 ## Reference
+
+DatoCMS helped fix errors and introduce new features into the SDK which helped make this plugin possible. So big thanks to them for being so on it. 
+
+Links I read to help make this plugin
+
  * https://www.datocms.com/docs/plugin-sdk/build-your-first-plugin#install-your-plugin-in-the-datocms-web-app
  * https://www.datocms.com/docs/plugin-sdk/publishing-to-marketplace
 
