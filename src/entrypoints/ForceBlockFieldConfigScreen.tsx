@@ -13,11 +13,9 @@ export function ForceBlockFieldConfigScreen({ctx}: PropTypes) {
     const [blockSwitchFieldData, setBlockSwitchFieldData] = useState<any>([]);
     const parameters = ctx.parameters as ManualExtensionParameters;
 
-    // const followerFields = useMemo(
-    //     () =>
-    //         parameters.slaveFields ? parameters.slaveFields.split(/\s*,\s*/) : [],
-    //     [parameters]
-    // );
+    const quickLog = (val: any) => {
+        if (parameters.devMode) console.log(val)
+    }
 
     /**
      * update a single parameter field.
@@ -40,7 +38,7 @@ export function ForceBlockFieldConfigScreen({ctx}: PropTypes) {
         let currentBlocksToApply: any[] = pluginParameters.blockFieldsArray as [];
         if (currentBlocksToApply === undefined) currentBlocksToApply = [];
         const hasValue = currentBlocksToApply?.indexOf(blockTypeID);
-        //console.log(`blockFieldParameterContainsID:: blockTypeID : ${blockTypeID} forced: ${hasValue}`);
+        //quickLog(`blockFieldParameterContainsID:: blockTypeID : ${blockTypeID} forced: ${hasValue}`);
         return [hasValue !== -1, hasValue];
     }
 
@@ -96,16 +94,31 @@ export function ForceBlockFieldConfigScreen({ctx}: PropTypes) {
      * 2.1 set the state of the switchfield based on if the blockID is in the parameters.blockFieldsArray
      * (blockFieldsArray is a property of the blockField Plugin)
      */
-    useEffect(() => {
+    useEffect(  ()  => {
+
 
         let validators: string[] = [];
-        Object.values(ctx.fields).forEach((field: any) => {
-            //// rich_text_blocks is the field type for modula blocks.
-            if (field.attributes.validators.hasOwnProperty("rich_text_blocks"))
-                if (field.attributes.validators.rich_text_blocks.hasOwnProperty("item_types"))
-                    validators = validators.concat(field.attributes.validators.rich_text_blocks["item_types"]);
-        });
+        // old style before pendingField was added to sdk.
+        // Object.values(ctx.fields).forEach((field: any) => {
+        //     //// rich_text_blocks is the field type for modula blocks.
+        //     if (field.attributes.validators.hasOwnProperty("rich_text_blocks"))
+        //         if (field.attributes.validators.rich_text_blocks.hasOwnProperty("item_types"))
+        //             validators = validators.concat(field.attributes.validators.rich_text_blocks["item_types"]);
+        // });
 
+        if (ctx.pendingField !== null) {
+            if (ctx.pendingField.attributes.validators.hasOwnProperty("rich_text_blocks")) { // @ts-ignore
+                if (ctx.pendingField.attributes.validators.rich_text_blocks.hasOwnProperty("item_types")) { // @ts-ignore
+                    validators = validators.concat(ctx.pendingField.attributes.validators.rich_text_blocks["item_types"]);
+                }
+            }
+        } else {
+
+             ctx.alert("Force blocks works with the ctx.pendingField which is not present.").then();
+            return;
+        }
+
+        quickLog(`ForceBlockFieldConfig: validator::\r\n ${JSON.stringify(validators, null, 2)}`)
 
         let initialSwitchFieldData: any[] = [];
         validators.forEach((validators_block_id, index) => {
@@ -120,43 +133,26 @@ export function ForceBlockFieldConfigScreen({ctx}: PropTypes) {
         })
         setBlockSwitchFieldData(initialSwitchFieldData);
 
-        //// Goal: Find the validators for this field.
-        // Object.values(ctx.fields).find(
-        //     (entry) => entry["itemTypeId"] === itemTypeId
-        // );
 
-        //// Attempt to cheat crossdomain denied.
-        // const settings:any = window.parent.document.getElementsByClassName("Tabs__extra-info");///Field ID: 7544431
-        // console.log("Addon == " + JSON.stringify(settings, null, 3));
     }, [parameters]);
 
     return (
         <Canvas ctx={ctx}>
             <Form>
-                {/*<TextField*/}
-                {/*    id="targetFields"*/}
-                {/*    name="targetFields"*/}
-                {/*    label="blockFields in this model, that should be automatically filled."*/}
-                {/*    hint="Please insert the block fields API key separated by commas"*/}
-                {/*    required*/}
-                {/*    value={pluginParameters.blockFields}*/}
-                {/*    onChange={update.bind(null, "blockFields")}*/}
-                {/*/>*/}
-                <SwitchField
+                 <SwitchField
                     id="devMode"
                     name="devMode"
                     label="Enable DebugMode"
                     value={pluginParameters.devMode || false}
                     onChange={update.bind(null, "devMode")}
                 />
-                <div>Select blocks to automatically apply to this field, when creating a new instance of this model.
-                </div>
+                <div>Select Validations to automatically apply to this field. (When creating a new instance)</div>
                 {blockSwitchFieldData.map((detail: any) => (
                     <SwitchField
                         key={detail.key}
                         id={`${detail.validators_block_id}`}
                         name={`${detail.validators_block_id}`}
-                        label={`Force apply ${detail.blockName}`}
+                        label={`Apply ${detail.blockName}`}
                         value={detail.force}
                         onChange={updateBlockFields.bind(null, detail.validators_block_id)}
                     />
@@ -166,22 +162,3 @@ export function ForceBlockFieldConfigScreen({ctx}: PropTypes) {
         </Canvas>
     );
 }
-
-
-//const blockValidators = ctx.parameters.validators.rich_text_blocks["item_types"];
-// const blockFields = useMemo(
-//     () =>
-//         parameters.blockFields ? parameters.blockFields.split(/\s*,\s*/) : [],
-//     [parameters]
-// );
-
-//// To immediately save a parameter, use callback, otherwise, you have
-//// to click save manually.
-// const update = useCallback(
-//     (field, value) => {
-//         const newParameters = { ...formValues, [field]: value };
-//         setFormValues(newParameters);
-//         ctx.setParameters(newParameters);
-//     },
-//     [formValues, setFormValues, ctx]
-// );
